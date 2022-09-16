@@ -5,14 +5,14 @@ restApp = Flask(__name__)
 restApi = Api(restApp)
 
 
-class TestAPI(Resource):
+class NumberList(Resource):
     def get(self):
         print("Server Up")
         return [1, 2, 3, 4]
 
 
 # binding Class to endpoints
-restApi.add_resource(TestAPI, "/pingme")
+restApi.add_resource(NumberList, "/numbers")
 
 
 # server boot up
