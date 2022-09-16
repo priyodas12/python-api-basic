@@ -11,8 +11,14 @@ class NumberList(Resource):
         return [1, 2, 3, 4]
 
 
+class Persons(Resource):
+    def get(self, name):
+        return "Hello {}".format(name)
+
+
 # binding Class to endpoints
 restApi.add_resource(NumberList, "/numbers")
+restApi.add_resource(Persons, "/persons/<string:name>")
 
 
 # server boot up
