@@ -18,4 +18,4 @@ def numberList(num):
 
 # server boot up
 if __name__ == "__main__":
-    restApp.run(debug=True)
+    restApp.run(debug=True, port=7200)
