@@ -1,24 +1,19 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Api, Resource
 
 restApp = Flask(__name__)
-restApi = Api(restApp)
 
 
-class NumberList(Resource):
-    def get(self):
-        print("Server Up")
-        return [1, 2, 3, 4]
+@restApp.route("/")
+def helloWOrld():
+    return "hello world!"
 
 
-class Persons(Resource):
-    def get(self, name):
-        return "Hello {}".format(name)
-
-
-# binding Class to endpoints
-restApi.add_resource(NumberList, "/numbers")
-restApi.add_resource(Persons, "/persons/<string:name>")
+@restApp.route("/numbers/list/<num>")
+def numberList(num):
+    my_list = list(range(0, int(num), 1))
+    print(my_list)
+    return jsonify(my_list)
 
 
 # server boot up
