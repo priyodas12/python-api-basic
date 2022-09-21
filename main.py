@@ -3,7 +3,12 @@ from flask_restful import Api, Resource
 
 restApp = Flask(__name__)
 
-users = [{"pid": "abc"}, {"pid": "abd"}, {"pid": "abe"}, {"pid": "abf"}]
+users = [
+    {"pid": 101, "name": "abc"},
+    {"pid": 102, "name": "abe"},
+    {"pid": 103, "name": "abg"},
+    {"pid": 104, "name": "abj"},
+]
 
 
 @restApp.route("/")
@@ -20,9 +25,48 @@ def numberList(num):
 
 @restApp.route("/users", methods=["POST"])
 def addSingleUserData():
-    user = {"pid": request.json["pid"]}
-    users.append(user)
-    return jsonify(users)
+    user = {"pid": request.json["pid"], "name": request.json["name"]}
+
+    if findUser(users, user["pid"]):
+        return jsonify({"Erorr": "User already exists"})
+    else:
+        users.append(user)
+        return jsonify(users)
+
+
+@restApp.route("/users", methods=["PUT"])
+def modifySingleUserData():
+    user = {"pid": request.json["pid"], "name": request.json["name"]}
+
+    if findUser(users, user["pid"]):
+        deleteUser(users, user["pid"])
+        users.append(user)
+        return jsonify(users)
+    else:
+        return jsonify({"Erorr": "User does not exist!"})
+
+
+def findUser(userList, pid):
+    for u in userList:
+        print(u["pid"], type(pid), type(u["pid"]))
+        if u["pid"] == int(pid):
+            res = True
+            break
+        else:
+            res = False
+    return res
+
+
+def deleteUser(userList, pid):
+    for u in userList:
+        print(u["pid"], type(pid), type(u["pid"]))
+        if u["pid"] == int(pid):
+            users.remove(u)
+            res = True
+            break
+        else:
+            res = False
+    return res
 
 
 # server boot up
