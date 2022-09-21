@@ -46,6 +46,15 @@ def modifySingleUserData():
         return jsonify({"Erorr": "User does not exist!"})
 
 
+@restApp.route("/users/<int:id>", methods=["DELETE"])
+def deleteSingleUserData(id):
+    if findUser(users, id):
+        deleteUser(users, id)
+        return jsonify(users)
+    else:
+        return jsonify({"Erorr": "User does not exist!"})
+
+
 def findUser(userList, pid):
     for u in userList:
         print(u["pid"], type(pid), type(u["pid"]))
