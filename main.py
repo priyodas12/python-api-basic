@@ -1,7 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_restful import Api, Resource
 
 restApp = Flask(__name__)
+
+users = [{"pid": "abc"}, {"pid": "abd"}, {"pid": "abe"}, {"pid": "abf"}]
 
 
 @restApp.route("/")
@@ -9,11 +11,18 @@ def helloWOrld():
     return "hello world!"
 
 
-@restApp.route("/numbers/list/<num>")
+@restApp.route("/numbers/list/<int:num>", methods=["GET"])
 def numberList(num):
-    my_list = list(range(0, int(num), 1))
+    my_list = list(range(0, num, 1))
     print(my_list)
     return jsonify(my_list)
+
+
+@restApp.route("/users", methods=["POST"])
+def addSingleUserData():
+    user = {"pid": request.json["pid"]}
+    users.append(user)
+    return jsonify(users)
 
 
 # server boot up
